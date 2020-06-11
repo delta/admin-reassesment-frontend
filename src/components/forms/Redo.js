@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Table, Button } from 'react-bootstrap';
 import './forms.css';
-
+import axios from 'axios';
 
 let subjectId = 0;
 
@@ -55,9 +55,35 @@ export const Redo = () => {
 		})
 	}
 
+	const addRedoForm = async (redoFormData) => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}
+
+		try {
+			const res = await axios.post('/api/v1/forms/redoform', redoFormData, config);
+			console.log(res);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(name, roll, department, status, subject)
+		let data = {};
+		data.name = name;
+		data.roll = roll;
+		data.department = department;
+		data.batch = batch;
+		data.status = status;
+
+		let subjects = [];
+		subject.subjectAllId.forEach(sub => subjects.push(subject.subjectById[sub]));
+		data.subject = subjects;
+
+		addRedoForm(data);
 	}
 
 	return (
@@ -102,7 +128,6 @@ export const Redo = () => {
 				<tbody>
 					{
 						subject.subjectAllId.map((id, idx) => {
-							console.log("iddas", id)
 							return (
 								<tr key={id}>
 									<td>{idx + 1}</td>
