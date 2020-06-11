@@ -32,9 +32,7 @@ export const Redo = () => {
 			subjectById: {
 				...subject.subjectById,
 				[id]: {
-					dept: '',{
-
-					}
+					dept: '',
 					subjectCode: '',
 					subjectName: ''
 				},
