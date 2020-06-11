@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Form, Table, Button } from 'react-bootstrap';
+import React, { useState, useContext } from 'react';
+import { Form, Table, Button, Spinner } from 'react-bootstrap';
 import './forms.css';
 import axios from 'axios';
+import { GlobalContext } from '../../context/GlobalContext';
 
 let subjectId = 0;
 
@@ -23,8 +24,7 @@ export const Redo = () => {
 	const [status, setStatus] = useState(statusList[0]);
 	const [subject, setSubject] = useState({ subjectById: {}, subjectAllId: [] });
 
-
-
+	const { loading, toggleLoading } = useContext(GlobalContext);
 
 	const handleAddSubject = () => {
 		let id = `subject${subjectId}`;
@@ -61,13 +61,14 @@ export const Redo = () => {
 				'Content-Type': 'application/json'
 			}
 		}
-
+		toggleLoading();
 		try {
 			const res = await axios.post('/api/v1/forms/redoform', redoFormData, config);
 			console.log(res);
 		} catch (err) {
 			console.log(err);
 		}
+		toggleLoading();
 	}
 
 	const handleSubmit = (e) => {
@@ -86,8 +87,27 @@ export const Redo = () => {
 		addRedoForm(data);
 	}
 
+	const LoadingComponent = 
+		<Button variant="primary" disabled style={{
+			top: '45%',
+			left: '45%',
+			marginRight: '-50%', position: 'absolute'
+		}}>
+			<Spinner
+				as="span"
+				animation="grow"
+				size="sm"
+				role="status"
+				aria-hidden="true"
+			/>
+			  Loading...
+		</Button>
+	
+	if(loading) return LoadingComponent;
+
 	return (
 		<Form>
+			<h1 className="header">Redo Form</h1>
 			<Form.Group >
 				<Form.Label>Name</Form.Label>
 				<Form.Control type="text" placeholder="Shivasis Padhi" value={name} onChange={(e) => setName(e.target.value)} />
