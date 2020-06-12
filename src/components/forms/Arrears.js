@@ -47,7 +47,7 @@ export const Arrears = () => {
         }
         toggleLoading();
         try {
-            const res = await axios.post('/api/v1/forms/redoform', redoFormData, config);
+            const res = await axios.post('/api/v1/forms/arrear', redoFormData, config);
             console.log(res);
         } catch (err) {
             console.log(err);
