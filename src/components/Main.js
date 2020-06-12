@@ -3,8 +3,10 @@ import { Redo } from './forms/Redo';
 
 export const Main = () => {
     return (
-        <div>
-            <Redo />
-        </div>
+        
+            <div>
+                <Redo />
+            </div>
+        
     )
 }
