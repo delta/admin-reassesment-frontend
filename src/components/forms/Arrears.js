@@ -5,8 +5,9 @@ import axios from 'axios';
 import { GlobalContext } from '../../context/GlobalContext';
 import { SubjectListContext } from '../../context/SubjectListContext';
 import { SubjectList } from './SubjectList';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
-export const ReAssesment = () => {
+export const Arrears = () => {
 
     const departmentList = ['CSE', 'ECE', 'ICE', 'Mech', 'Meta'];
     const statusList = ['Regular', 'Passed Out']
@@ -16,12 +17,21 @@ export const ReAssesment = () => {
     let batchOptions = [];
     for (let i = startBatch; i <= endBatch; ++i) batchOptions.push(i);
 
+    let semesterOptions = [];
+    for (let i = 1; i <= 10; ++i) semesterOptions.push(i);
+
 
     const [name, setName] = useState('');
     const [roll, setRoll] = useState('');
     const [department, setDepartment] = useState(departmentList[0]);
     const [batch, setBatch] = useState(batchOptions[0]);
     const [status, setStatus] = useState(statusList[0]);
+    const [semester, setSemester] = useState('')
+    const [feeDetails, setFeeDetails] = useState('')
+    const [feeSubjectNo, setFeeSubjectNo] = useState(0)
+    const [feeTotal, setFeeTotal] = useState(0)
+    const [feeSbiRef, setFeeSbiRef] = useState('')
+    const [feeBankRef, setFeeBankRef] = useState('')
 
     const { loading, toggleLoading } = useContext(GlobalContext);
     const { subjectById, subjectAllId } = useContext(SubjectListContext);
@@ -74,11 +84,29 @@ export const ReAssesment = () => {
             Loading...
         </Button>
 
+    let history = useHistory()
+    let { url } = useRouteMatch();
+    let formType = url.split('/').slice(-1)[0];
+
+    const getFormName = (formType) => {
+        switch (formType) {
+            case 'reassesment':
+                return 'Re Assesment Form'
+            case 'redo':
+                return 'Redo Form'
+            case 'formattive-assesment':
+                return 'Formattive Assesment'
+        }
+    }
+
+    let regulations = 'https://google.com';
+
     if (loading) return LoadingComponent;
+
 
     return (
         <Form>
-            <h1 className="header">Re Assesment Form</h1>
+            <h1 className="header">{getFormName(formType)}</h1>
             <Form.Group >
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" placeholder="Shivasis Padhi" value={name} onChange={(e) => setName(e.target.value)} />
@@ -105,15 +133,35 @@ export const ReAssesment = () => {
                     {statusList.map((status, idx) => <option key={idx}>{status}</option>)}
                 </Form.Control>
             </Form.Group>
+            {
+                status === 'Regular' ? (
+                    <Form.Group >
+                        <Form.Label>Semester Presently Studying in</Form.Label>
+                        <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
+                            {semesterOptions.map((status, idx) => <option key={idx}>{status}</option>)}
+                        </Form.Control>
+                    </Form.Group>) : ''
+            }
             <SubjectList />
-            <h4>Fee Paid Details of Re Do</h4>
+            <Form.Group >
+                <Form.Label>Fee Details</Form.Label>
+                <Form.Control as="textarea" value={feeDetails} onChange={(e) => setFeeDetails(e.target.value)} />
+            </Form.Group>
+            <h3>Regulations</h3>
+            <p>
+                <li>Reg 1</li>
+                <li>Reg 2</li>
+                <a href={regulations}>Click here...</a></p>
+                <hr/>
+            <h4>Payment Details</h4>
+            <h5>Fee Paid Details of {formType} 2020</h5>
             <Form.Group >
                 <Form.Label>Number of Subject fees paid</Form.Label>
-                <Form.Control type="number" placeholder="4" />
+                <Form.Control type="number" placeholder="4" value={feeSubjectNo} onChange={(e) => setFeeSubjectNo(e.target.value)}/>
             </Form.Group>
             <Form.Group >
                 <Form.Label>Total Amount (in ₹)</Form.Label>
-                <Form.Control type="number" placeholder="2000" />
+                <Form.Control type="number" placeholder="2000" value={feeTotal} onChange={(e) => setFeeTotal(e.target.value)}/>
             </Form.Group>
             <Form.Group >
                 <Form.Label>Mark Sheet</Form.Label>
@@ -121,11 +169,11 @@ export const ReAssesment = () => {
             </Form.Group>
             <Form.Group >
                 <Form.Label>SBI Collect Reference Number</Form.Label>
-                <Form.Control type="text" placeholder="" />
+                <Form.Control type="text" placeholder="" value={feeSbiRef} onChange={(e) => setFeeSbiRef(e.target.value)}/>
             </Form.Group>
             <Form.Group >
                 <Form.Label>Bank Reference Number</Form.Label>
-                <Form.Control type="text" placeholder="" />
+                <Form.Control type="text" placeholder="" value={feeBankRef} onChange={(e) => setFeeBankRef(e.target.value)}/>
             </Form.Group>
             <Button variant="primary" type="submit" onClick={(e) => handleSubmit(e)}>
                 SUBMIT
