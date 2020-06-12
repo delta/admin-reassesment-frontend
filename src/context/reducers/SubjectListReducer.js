@@ -1,7 +1,6 @@
 export default (state, action) => {
     switch (action.type) {
         case 'ADD_SUBJECT':
-            console.log("add", state)
             {
                 let { id } = action;
                 return {

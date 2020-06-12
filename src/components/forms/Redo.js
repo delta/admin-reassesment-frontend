@@ -24,6 +24,7 @@
 		const [status, setStatus] = useState(statusList[0]);
 
 		const { loading, toggleLoading } = useContext(GlobalContext);
+		const { subjectById, subjectAllId } = useContext(SubjectListContext);
 
 		const addRedoForm = async (redoFormData) => {
 			const config = {
@@ -51,8 +52,8 @@
 			data.status = status;
 
 			let subjects = [];
-			// subject.subjectAllId.forEach(sub => subjects.push(subject.subjectById[sub]));
-			// data.subject = subjects;
+			subjectAllId.forEach(sub => subjects.push(subjectById[sub]));
+			data.subject = subjects;
 
 			addRedoForm(data);
 		}
