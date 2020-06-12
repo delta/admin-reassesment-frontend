@@ -26,7 +26,7 @@ export const Arrears = () => {
     const [department, setDepartment] = useState(departmentList[0]);
     const [batch, setBatch] = useState(batchOptions[0]);
     const [status, setStatus] = useState(statusList[0]);
-    const [semester, setSemester] = useState('')
+    const [semester, setSemester] = useState(1)
     const [feeDetails, setFeeDetails] = useState('')
     const [feeSubjectNo, setFeeSubjectNo] = useState(0)
     const [feeTotal, setFeeTotal] = useState(0)
@@ -35,6 +35,9 @@ export const Arrears = () => {
 
     const { loading, toggleLoading } = useContext(GlobalContext);
     const { subjectById, subjectAllId } = useContext(SubjectListContext);
+
+    let { url } = useRouteMatch();
+    let formType = url.split('/').slice(-1)[0];
 
     const addRedoForm = async (redoFormData) => {
         const config = {
@@ -60,6 +63,14 @@ export const Arrears = () => {
         data.department = department;
         data.batch = batch;
         data.status = status;
+        data.semester = semester;
+        data.examType = formType;
+        data.feeDetails = feeDetails;
+        data.feeSubjectNo = feeSubjectNo;
+        data.feeTotal = feeTotal;
+        data.feeSbiRef = feeSbiRef;
+        data.feeBankRef = feeBankRef;
+        console.log(data);
 
         let subjects = [];
         subjectAllId.forEach(sub => subjects.push(subjectById[sub]));
@@ -83,10 +94,6 @@ export const Arrears = () => {
             />
             Loading...
         </Button>
-
-    let history = useHistory()
-    let { url } = useRouteMatch();
-    let formType = url.split('/').slice(-1)[0];
 
     const getFormName = (formType) => {
         switch (formType) {
