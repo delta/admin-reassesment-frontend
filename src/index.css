@@ -1,0 +1,34 @@
+.headerImage{
+    width: 100%;
+}
+
+.landingContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #012951;
+}
+
+.headerText {
+    color: white;
+    font-size:3.5vw;
+    font-weight: bold;
+}
+
+.landingBody{
+    background-color:#eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.loginButton{
+    width: 30vw;
+    margin-top: 5vh;
+}
+
+.landingForm{
+    
+}

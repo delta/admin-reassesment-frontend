@@ -103,6 +103,8 @@ export const Arrears = () => {
                 return 'Redo Form'
             case 'formative-assesment':
                 return 'Formative Assesment'
+            default:
+                return 'Redo Form'
         }
     }
 
