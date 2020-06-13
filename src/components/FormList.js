@@ -19,7 +19,7 @@ export const FormList = () => {
         }
     }, [])
 
-    let formTypes = ['reassesment', 'redo', 'formattive-assesment'];
+    let formTypes = ['reassesment', 'redo', 'formative-assesment'];
     return (
         <div>
             {

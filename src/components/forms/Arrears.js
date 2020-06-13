@@ -101,8 +101,8 @@ export const Arrears = () => {
                 return 'Re Assesment Form'
             case 'redo':
                 return 'Redo Form'
-            case 'formattive-assesment':
-                return 'Formattive Assesment'
+            case 'formative-assesment':
+                return 'Formative Assesment'
         }
     }
 
