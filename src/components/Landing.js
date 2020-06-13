@@ -1,5 +1,4 @@
 import React from 'react';
-import { Jumbotron } from 'react-bootstrap';
 import nittHeader from '../images/nitt.png';
 import nittMob from '../images/nittmob.png';
 import { Button } from 'react-bootstrap'

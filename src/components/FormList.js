@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './css/formList.css';
 
 export const FormList = () => {
     const [formStatus, setformStatus] = useState({});
@@ -21,12 +22,11 @@ export const FormList = () => {
 
     let formTypes = ['reassesment', 'redo', 'formative-assesment'];
     return (
-        <div>
+        <div className="formListContainer">
+            <h2>FORMS</h2>
             {
-                formTypes.map(form => (
-                    formStatus[form] ?
-                    <li>{form}</li>:
-                    <li><b>{form}</b></li>
+                formTypes.map((form, idx) => (
+                    <a href={`/forms/${form}`} className={formStatus[form] ? "formElement disabled": "formElement"} key={idx}>{form.toUpperCase()}</a>
                 ))
             }
         </div>

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { Form, Table, Button, Spinner } from 'react-bootstrap';
-import './forms.css';
 import axios from 'axios';
 import { GlobalContext } from '../../context/GlobalContext';
 import { SubjectListContext } from '../../context/SubjectListContext';
