@@ -6,6 +6,7 @@ import { SubjectListContext, SubjectListProvider } from "../context/SubjectListC
 import { Login } from './Login';
 import { Main} from './Main';
 import { Landing } from './Landing';
+import { CustomNavbar } from './Navbar'
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
 			<GlobalProvider>
 				<SubjectListProvider>
 					<Container className="p-3">
+						<CustomNavbar />
 						<Switch>
 							<Route exact path='/'>
 								<Landing/>
