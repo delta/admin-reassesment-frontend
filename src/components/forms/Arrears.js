@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Form, Table, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { GlobalContext } from '../../context/GlobalContext';
 import { SubjectListContext } from '../../context/SubjectListContext';
 import { SubjectList } from './SubjectList';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 export const Arrears = () => {
 
@@ -34,6 +35,23 @@ export const Arrears = () => {
 
     const { loading, toggleLoading } = useContext(GlobalContext);
     const { subjectById, subjectAllId } = useContext(SubjectListContext);
+
+
+    const [formStatus, setformStatus] = useState({});
+    useEffect(() => {
+        try {
+            const getFormStatus = async () => {
+                let formFilled = await axios.get('/api/v1/forms/arrear');
+                formFilled = formFilled.data.data;
+                setformStatus({
+                    ...formFilled
+                })
+            }
+            getFormStatus();
+        } catch (err) {
+            console.log(err)
+        }
+    }, [])
 
     let { url } = useRouteMatch();
     let formType = url.split('/').slice(-1)[0];
@@ -110,83 +128,88 @@ export const Arrears = () => {
     let regulations = 'https://google.com';
 
     if (loading) return LoadingComponent;
-
+    console.log(formStatus)
 
     return (
-        <Form>
-            <h1 className="header">{getFormName(formType)}</h1>
-            <Form.Group >
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Shivasis Padhi" value={name} onChange={(e) => setName(e.target.value)} />
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Roll No.</Form.Label>
-                <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} />
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Department</Form.Label>
-                <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
-                    {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
-                </Form.Control>
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Batch</Form.Label>
-                <Form.Control as="select" value={batch} onChange={(e) => setBatch(e.target.value)}>
-                    {batchOptions.map((batch, idx) => <option key={idx}>{batch}</option>)}
-                </Form.Control>
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Status</Form.Label>
-                <Form.Control as="select" value={status} onChange={(e) => setStatus(e.target.value)}>
-                    {statusList.map((status, idx) => <option key={idx}>{status}</option>)}
-                </Form.Control>
-            </Form.Group>
+        <>
             {
-                status === 'Regular' ? (
-                    <Form.Group >
-                        <Form.Label>Semester Presently Studying in</Form.Label>
-                        <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
-                            {semesterOptions.map((status, idx) => <option key={idx}>{status}</option>)}
-                        </Form.Control>
-                    </Form.Group>) : ''
+                formStatus[formType]?<Redirect to='/forms' />: ''
             }
-            <SubjectList />
-            <Form.Group >
-                <Form.Label>Fee Details</Form.Label>
-                <Form.Control as="textarea" value={feeDetails} onChange={(e) => setFeeDetails(e.target.value)} />
-            </Form.Group>
-            <h3>Regulations</h3>
-            <p>
-                <li>Reg 1</li>
-                <li>Reg 2</li>
-                <a href={regulations}>Click here...</a></p>
-                <hr/>
-            <h4>Payment Details</h4>
-            <h5>Fee Paid Details of {formType} 2020</h5>
-            <Form.Group >
-                <Form.Label>Number of Subject fees paid</Form.Label>
-                <Form.Control type="number" placeholder="4" value={feeSubjectNo} onChange={(e) => setFeeSubjectNo(e.target.value)}/>
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Total Amount (in ₹)</Form.Label>
-                <Form.Control type="number" placeholder="2000" value={feeTotal} onChange={(e) => setFeeTotal(e.target.value)}/>
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Mark Sheet</Form.Label>
-                <Form.Control type="text" value={"₹ 30"} disabled />
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>SBI Collect Reference Number</Form.Label>
-                <Form.Control type="text" placeholder="" value={feeSbiRef} onChange={(e) => setFeeSbiRef(e.target.value)}/>
-            </Form.Group>
-            <Form.Group >
-                <Form.Label>Bank Reference Number</Form.Label>
-                <Form.Control type="text" placeholder="" value={feeBankRef} onChange={(e) => setFeeBankRef(e.target.value)}/>
-            </Form.Group>
-            <Button variant="primary" type="submit" onClick={(e) => handleSubmit(e)}>
-                SUBMIT
+            <Form>
+                <h1 className="header">{getFormName(formType)}</h1>
+                <Form.Group >
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" placeholder="Shivasis Padhi" value={name} onChange={(e) => setName(e.target.value)} />
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Roll No.</Form.Label>
+                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} />
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Department</Form.Label>
+                    <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
+                        {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Batch</Form.Label>
+                    <Form.Control as="select" value={batch} onChange={(e) => setBatch(e.target.value)}>
+                        {batchOptions.map((batch, idx) => <option key={idx}>{batch}</option>)}
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Status</Form.Label>
+                    <Form.Control as="select" value={status} onChange={(e) => setStatus(e.target.value)}>
+                        {statusList.map((status, idx) => <option key={idx}>{status}</option>)}
+                    </Form.Control>
+                </Form.Group>
+                {
+                    status === 'Regular' ? (
+                        <Form.Group >
+                            <Form.Label>Semester Presently Studying in</Form.Label>
+                            <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
+                                {semesterOptions.map((status, idx) => <option key={idx}>{status}</option>)}
+                            </Form.Control>
+                        </Form.Group>) : ''
+                }
+                <SubjectList />
+                <Form.Group >
+                    <Form.Label>Fee Details</Form.Label>
+                    <Form.Control as="textarea" value={feeDetails} onChange={(e) => setFeeDetails(e.target.value)} />
+                </Form.Group>
+                <h3>Regulations</h3>
+                <p>
+                    <li>Reg 1</li>
+                    <li>Reg 2</li>
+                    <a href={regulations}>Click here...</a></p>
+                <hr />
+                <h4>Payment Details</h4>
+                <h5>Fee Paid Details of {formType} 2020</h5>
+                <Form.Group >
+                    <Form.Label>Number of Subject fees paid</Form.Label>
+                    <Form.Control type="number" placeholder="4" value={feeSubjectNo} onChange={(e) => setFeeSubjectNo(e.target.value)} />
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Total Amount (in ₹)</Form.Label>
+                    <Form.Control type="number" placeholder="2000" value={feeTotal} onChange={(e) => setFeeTotal(e.target.value)} />
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Mark Sheet</Form.Label>
+                    <Form.Control type="text" value={"₹ 30"} disabled />
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>SBI Collect Reference Number</Form.Label>
+                    <Form.Control type="text" placeholder="" value={feeSbiRef} onChange={(e) => setFeeSbiRef(e.target.value)} />
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Bank Reference Number</Form.Label>
+                    <Form.Control type="text" placeholder="" value={feeBankRef} onChange={(e) => setFeeBankRef(e.target.value)} />
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={(e) => handleSubmit(e)}>
+                    SUBMIT
         </Button>
 
-        </Form>
+            </Form>
+        </>
     )
 }

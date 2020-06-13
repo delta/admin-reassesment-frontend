@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './css/formList.css';
+import { Link } from 'react-router-dom';
 
 export const FormList = () => {
     const [formStatus, setformStatus] = useState({});
-    let data = {}
     useEffect(() => {
         try {
             const getFormStatus = async () => {
@@ -26,7 +26,7 @@ export const FormList = () => {
             <h2>FORMS</h2>
             {
                 formTypes.map((form, idx) => (
-                    <a href={`/forms/${form}`} className={formStatus[form] ? "formElement disabled": "formElement"} key={idx}>{form.toUpperCase()}</a>
+                    <Link to={`/forms/${form}`} className={formStatus[form] ? "formElement disabled": "formElement"} key={idx}>{form.toUpperCase()}</Link>
                 ))
             }
         </div>
