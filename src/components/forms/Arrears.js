@@ -50,8 +50,10 @@ export const Arrears = ({ formStatus }) => {
         try {
             const res = await axios.post('/api/v1/forms/arrear', redoFormData, config);
             console.log(res);
+            window.location.href = '/forms';
         } catch (err) {
             console.log(err);
+            setErrors(["Internal Server Error"])
         }
         toggleLoading();
     }
