@@ -13,7 +13,7 @@ export const Landing = () => {
             <h1 className="headerText">ARREARS PORTAL</h1>
         </div>
         <div className="landingBody">
-            <Button className="loginButton" variant="success">LOGIN</Button>
+            <Button className="loginButton" variant="success" onClick={() => window.location.href='/login'}>LOGIN</Button>
         </div>
             </>
     )

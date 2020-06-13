@@ -3,23 +3,7 @@ import axios from 'axios';
 import './css/formList.css';
 import { Link } from 'react-router-dom';
 
-export const FormList = () => {
-    const [formStatus, setformStatus] = useState({});
-    useEffect(() => {
-        try {
-            const getFormStatus = async () => {
-                let formFilled = await axios.get('/api/v1/forms/arrear');
-                formFilled = formFilled.data.data;
-                setformStatus({
-                    ...formFilled
-                })
-            }
-            getFormStatus();
-        } catch (err) {
-            console.log(err)
-        }
-    }, [])
-
+export const FormList = ({formStatus}) => {
     let formTypes = ['reassesment', 'redo', 'formative-assesment'];
     return (
         <div className="formListContainer">

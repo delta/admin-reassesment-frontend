@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Form, Table, Button, Spinner } from 'react-bootstrap';
+import { Form, Alert, Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { GlobalContext } from '../../context/GlobalContext';
 import { SubjectListContext } from '../../context/SubjectListContext';
 import { SubjectList } from './SubjectList';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 
-export const Arrears = () => {
+export const Arrears = ({ formStatus }) => {
 
     const departmentList = ['CSE', 'ECE', 'ICE', 'Mech', 'Meta'];
     const statusList = ['Regular', 'Passed Out']
@@ -26,32 +26,16 @@ export const Arrears = () => {
     const [department, setDepartment] = useState(departmentList[0]);
     const [batch, setBatch] = useState(batchOptions[0]);
     const [status, setStatus] = useState(statusList[0]);
-    const [semester, setSemester] = useState(1)
-    const [feeDetails, setFeeDetails] = useState('')
-    const [feeSubjectNo, setFeeSubjectNo] = useState(0)
-    const [feeTotal, setFeeTotal] = useState(0)
-    const [feeSbiRef, setFeeSbiRef] = useState('')
-    const [feeBankRef, setFeeBankRef] = useState('')
+    const [semester, setSemester] = useState(1);
+    const [feeDetails, setFeeDetails] = useState('');
+    const [feeSubjectNo, setFeeSubjectNo] = useState(0);
+    const [feeTotal, setFeeTotal] = useState(0);
+    const [feeSbiRef, setFeeSbiRef] = useState('');
+    const [feeBankRef, setFeeBankRef] = useState('');
+    const [errors, setErrors] = useState([]);
 
     const { loading, toggleLoading } = useContext(GlobalContext);
     const { subjectById, subjectAllId } = useContext(SubjectListContext);
-
-
-    const [formStatus, setformStatus] = useState({});
-    useEffect(() => {
-        try {
-            const getFormStatus = async () => {
-                let formFilled = await axios.get('/api/v1/forms/arrear');
-                formFilled = formFilled.data.data;
-                setformStatus({
-                    ...formFilled
-                })
-            }
-            getFormStatus();
-        } catch (err) {
-            console.log(err)
-        }
-    }, [])
 
     let { url } = useRouteMatch();
     let formType = url.split('/').slice(-1)[0];
@@ -70,6 +54,33 @@ export const Arrears = () => {
             console.log(err);
         }
         toggleLoading();
+    }
+
+    const validateForm = (data) => {
+        let err = [];
+        if(!data.name) err.push('Please fill Name');
+        if(!data.roll) err.push('Please fill Roll No');
+        if(!data.department) err.push('Please fill department');
+        if(!data.batch) err.push('Please fill batch');
+        if(!data.status) err.push('Please fill status');
+        if(!data.examType) err.push('Please fill exam type');
+        if(!data.feeDetails) err.push('Please fill fee details');
+        if(!data.feeSubjectNo) err.push('Please fill fee subject No');
+        if(!data.feeTotal) err.push('Please fill fee total');
+        if(!data.feeSbiRef) err.push('Please fill fee SBI ref');
+        if(!data.feeBankRef) err.push('Please fill fee bank ref');
+        if(!data.subject.length) err.push('Please fill atleast 1 subject')
+        data.subject.forEach((sub, idx) => {
+            Object.keys(sub).forEach(key => {
+                if(!sub[key]) err.push(`${key.toUpperCase()} not filled for subject ${idx+1}`);
+            })
+        })
+
+        setErrors([...err]);
+
+        if(err.length === 0)
+            return true;
+        return false;
     }
 
     const handleSubmit = (e) => {
@@ -93,7 +104,9 @@ export const Arrears = () => {
         subjectAllId.forEach(sub => subjects.push(subjectById[sub]));
         data.subject = subjects;
 
-        addRedoForm(data);
+        if(validateForm(data))
+            addRedoForm(data);
+        else window.scrollTo(0,0);
     }
 
     const LoadingComponent =
@@ -128,12 +141,21 @@ export const Arrears = () => {
     let regulations = 'https://google.com';
 
     if (loading) return LoadingComponent;
-    console.log(formStatus)
 
     return (
         <>
             {
-                formStatus[formType]?<Redirect to='/forms' />: ''
+                formStatus[formType] ? <Redirect to='/forms' /> : ''
+            }
+            {
+                errors.length ?
+                <Alert variant={"danger"}>
+                    {
+                        errors.map((err, idx) => (
+                            <li key={idx}>{err}</li>
+                        ))
+                    }
+                </Alert>: ''
             }
             <Form>
                 <h1 className="header">{getFormName(formType)}</h1>
