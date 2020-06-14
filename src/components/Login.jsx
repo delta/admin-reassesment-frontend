@@ -19,6 +19,7 @@ const login = () => {
 	.then(json => {
 		console.log(json);
 		if(json.success) {
+			localStorage.setItem("tokens", json.user);
 			window.location = "/forms"
 		}
 	})

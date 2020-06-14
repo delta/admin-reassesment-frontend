@@ -3,6 +3,7 @@ import {
     Navbar, Nav
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
+import {isLogin} from '../utils/authUtils'
 
 const loggedInUrls = [
     {
@@ -26,7 +27,7 @@ const loggedOutUrls = [
 ]
 
 export const CustomNavbar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(isLogin())
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Brand><Link to='/' style={{ textDecoration: 'none', color:'#ffffff'}}>ARREARS</Link></Navbar.Brand>

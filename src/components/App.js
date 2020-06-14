@@ -7,6 +7,8 @@ import { Login } from './Login';
 import { Main } from './Main';
 import { Landing } from './Landing';
 import { CustomNavbar } from './Navbar'
+import PrivateRoute from './routes/PrivateRoute';
+import PublicRoute from './routes/PublicRoute';
 
 
 const App = () => {
@@ -17,15 +19,9 @@ const App = () => {
 					<CustomNavbar />
 					<Container className="p-3">
 						<Switch>
-							<Route exact path='/'>
-								<Landing />
-							</Route>
-							<Route path="/login">
-								<Login />
-							</Route>
-							<Route path="/forms">
-								<Main />
-							</Route>
+							<PublicRoute component={Landing} exact path='/' />
+							<PublicRoute path="/login" component={Login} />
+							<PrivateRoute path="/forms" component={Main} />
 						</Switch>
 					</Container>
 				</SubjectListProvider>
