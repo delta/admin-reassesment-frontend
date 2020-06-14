@@ -1,6 +1,7 @@
 import React from 'react';
 import nittHeader from '../images/nitt.png';
 import nittMob from '../images/nittmob.png';
+import {Link} from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 export const Landing = () => {
     return (
@@ -13,8 +14,10 @@ export const Landing = () => {
             <h1 className="headerText">ARREARS PORTAL</h1>
         </div>
         <div className="landingBody">
-            <Button className="loginButton" variant="success" onClick={() => window.location.href='/login'}>LOGIN</Button>
+            <Link className="loginButton" to="/login">
+                <Button className="loginButton" variant="success">LOGIN</Button>
+            </Link>
         </div>
-            </>
+        </>
     )
 }

@@ -24,7 +24,26 @@
     min-height: 60vh;
 }
 
-.loginButton{
+.loginButton {
     width: 30vw;
     margin-top: 5vh;
+}
+
+.loginButton a {
+    text-decoration: none;
+    color: white;
+}
+
+.loginForm {
+    max-width: 500px;
+    margin: auto;
+}
+
+.loginForm form {
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+.loginForm form button {
+    background-color: #012951;
 }
