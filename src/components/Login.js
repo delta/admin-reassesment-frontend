@@ -17,7 +17,7 @@ export const Login = () => {
 			return;
 		}
 		setLoading(true);
-		fetch('/auth', {
+		fetch('/auth/login', {
 			method: "POST",
 			credentials: "include",
 			headers: {
