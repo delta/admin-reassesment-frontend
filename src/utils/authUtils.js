@@ -8,6 +8,10 @@ export const unsetToken = () => {
     localStorage.removeItem("tokens")
 }
 
+export const getUserRoll = () => {
+    return Number(localStorage.getItem("tokens"));
+}
+
 export const checkToken = () => {
     return axios({
         method: 'post',

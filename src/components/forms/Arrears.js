@@ -6,6 +6,7 @@ import { SubjectListContext } from '../../context/SubjectListContext';
 import { SubjectList } from './SubjectList';
 import { useRouteMatch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
+import { getUserRoll } from '../../utils/authUtils'
 
 export const Arrears = ({ formStatus }) => {
 
@@ -22,7 +23,7 @@ export const Arrears = ({ formStatus }) => {
 
 
     const [name, setName] = useState('');
-    const [roll, setRoll] = useState('');
+    const [roll, setRoll] = useState(getUserRoll());
     const [department, setDepartment] = useState(departmentList[0]);
     const [batch, setBatch] = useState(batchOptions[0]);
     const [status, setStatus] = useState(statusList[0]);
@@ -167,7 +168,7 @@ export const Arrears = ({ formStatus }) => {
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Roll No.</Form.Label>
-                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} />
+                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} disabled/>
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Department</Form.Label>
