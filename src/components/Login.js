@@ -6,6 +6,7 @@ export const Login = () => {
 	const passwordRef = useRef();
 	const [displayAlert, setDisplayAlert] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [errors, setErrors] = useState([])
 
 	const login = e => {
 		e.preventDefault();
@@ -38,6 +39,8 @@ export const Login = () => {
 			if (json.success) {
 				localStorage.setItem("tokens", json.user);
 				window.location = "/forms"
+			} else {
+				setErrors(["Invalid Credentials"])
 			}
 		})
 		.catch(err => {
@@ -47,6 +50,17 @@ export const Login = () => {
 
 	return (
 		<Jumbotron className='loginForm'>
+			<h4 style={{textAlign:'center'}}>Webmail Credentials</h4>
+			{
+                errors.length ?
+                <Alert variant={"danger"}>
+                    {
+                        errors.map((err, idx) => (
+                            <li key={idx}>{err}</li>
+                        ))
+                    }
+                </Alert>: ''
+            }
 			<Form onSubmit={login}>
 				<Form.Group controlId="formBasicusername">
 					<Form.Label>Roll No</Form.Label>
