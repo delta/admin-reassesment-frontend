@@ -61,27 +61,27 @@ export const Arrears = ({ formStatus }) => {
 
     const validateForm = (data) => {
         let err = [];
-        if(!data.name) err.push('Please fill Name');
-        if(!data.roll) err.push('Please fill Roll No');
-        if(!data.department) err.push('Please fill department');
-        if(!data.batch) err.push('Please fill batch');
-        if(!data.status) err.push('Please fill status');
-        if(!data.examType) err.push('Please fill exam type');
-        if(!data.feeDetails) err.push('Please fill fee details');
-        if(!data.feeSubjectNo) err.push('Please fill fee subject No');
-        if(!data.feeTotal) err.push('Please fill fee total');
-        if(!data.feeSbiRef) err.push('Please fill fee SBI ref');
-        if(!data.feeBankRef) err.push('Please fill fee bank ref');
-        if(!data.subject.length) err.push('Please fill atleast 1 subject')
+        if (!data.name) err.push('Please fill Name');
+        if (!data.roll) err.push('Please fill Roll No');
+        if (!data.department) err.push('Please fill department');
+        if (!data.batch) err.push('Please fill batch');
+        if (!data.status) err.push('Please fill status');
+        if (!data.examType) err.push('Please fill exam type');
+        if (!data.feeDetails) err.push('Please fill fee details');
+        if (!data.feeSubjectNo) err.push('Please fill fee subject No');
+        if (!data.feeTotal) err.push('Please fill fee total');
+        if (!data.feeSbiRef) err.push('Please fill fee SBI ref');
+        if (!data.feeBankRef) err.push('Please fill fee bank ref');
+        if (!data.subject.length) err.push('Please fill atleast 1 subject')
         data.subject.forEach((sub, idx) => {
             Object.keys(sub).forEach(key => {
-                if(!sub[key]) err.push(`${key.toUpperCase()} not filled for subject ${idx+1}`);
+                if (!sub[key]) err.push(`${key.toUpperCase()} not filled for subject ${idx + 1}`);
             })
         })
 
         setErrors([...err]);
 
-        if(err.length === 0)
+        if (err.length === 0)
             return true;
         return false;
     }
@@ -107,9 +107,9 @@ export const Arrears = ({ formStatus }) => {
         subjectAllId.forEach(sub => subjects.push(subjectById[sub]));
         data.subject = subjects;
 
-        if(validateForm(data))
+        if (validateForm(data))
             addRedoForm(data);
-        else window.scrollTo(0,0);
+        else window.scrollTo(0, 0);
     }
 
     const LoadingComponent =
@@ -142,8 +142,8 @@ export const Arrears = ({ formStatus }) => {
     }
 
     const getRegLink = (formType) => {
-        if(formType === 'redo') 
-        return 'https://delta.nitt.edu/~nimish/Summer-Term-Redo-2020.docx';
+        if (formType === 'redo')
+            return 'https://delta.nitt.edu/~nimish/Summer-Term-Redo-2020.docx';
     }
 
     if (loading) return LoadingComponent;
@@ -155,13 +155,13 @@ export const Arrears = ({ formStatus }) => {
             }
             {
                 errors.length ?
-                <Alert variant={"danger"}>
-                    {
-                        errors.map((err, idx) => (
-                            <li key={idx}>{err}</li>
-                        ))
-                    }
-                </Alert>: ''
+                    <Alert variant={"danger"}>
+                        {
+                            errors.map((err, idx) => (
+                                <li key={idx}>{err}</li>
+                            ))
+                        }
+                    </Alert> : ''
             }
             <Form>
                 <h1 className="header">{getFormName(formType)}</h1>
@@ -171,7 +171,7 @@ export const Arrears = ({ formStatus }) => {
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Roll No.</Form.Label>
-                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} disabled/>
+                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} disabled />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Department</Form.Label>
@@ -219,10 +219,13 @@ export const Arrears = ({ formStatus }) => {
                     <Form.Label>Total Amount (in ₹)</Form.Label>
                     <Form.Control type="number" placeholder="2000" value={feeTotal} onChange={(e) => setFeeTotal(e.target.value)} />
                 </Form.Group>
-                <Form.Group >
-                    <Form.Label>Mark Sheet</Form.Label>
-                    <Form.Control type="text" value={"₹ 30"} disabled />
-                </Form.Group>
+                {
+                    formType !== 'redo' ?
+                        <Form.Group >
+                            <Form.Label>Mark Sheet</Form.Label>
+                            <Form.Control type="text" value={"₹ 30"} disabled />
+                        </Form.Group> : ''
+                }
                 <Form.Group >
                     <Form.Label>SBI Collect Reference Number</Form.Label>
                     <Form.Control type="text" placeholder="" value={feeSbiRef} onChange={(e) => setFeeSbiRef(e.target.value)} />
