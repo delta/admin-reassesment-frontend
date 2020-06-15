@@ -169,11 +169,11 @@ export const Arrears = ({ formStatus }) => {
                 <h1 className="header">{getFormName(formType)}</h1>
                 <Form.Group >
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Shivasis Padhi" value={name} onChange={(e) => setName(e.target.value)} />
+                    <Form.Control type="text" placeholder="Enter name here" value={name} onChange={(e) => setName(e.target.value)} />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Roll No.</Form.Label>
-                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} disabled />
+                    <Form.Control type="number" placeholder="Enter roll number here" value={roll} onChange={(e) => setRoll(e.target.value)} disabled />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Department</Form.Label>
@@ -183,7 +183,7 @@ export const Arrears = ({ formStatus }) => {
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Phone No.</Form.Label>
-                    <Form.Control type="number" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)}  />
+                    <Form.Control type="number" placeholder="Enter phone number here" value={phone} onChange={(e) => setPhone(e.target.value)}  />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Batch</Form.Label>
