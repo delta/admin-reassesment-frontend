@@ -24,6 +24,7 @@ export const Arrears = ({ formStatus }) => {
 
     const [name, setName] = useState('');
     const [roll, setRoll] = useState(getUserRoll());
+    const [phone, setPhone] = useState('');
     const [department, setDepartment] = useState(departmentList[0]);
     const [batch, setBatch] = useState(batchOptions[0]);
     const [status, setStatus] = useState(statusList[0]);
@@ -101,6 +102,7 @@ export const Arrears = ({ formStatus }) => {
         data.feeTotal = feeTotal;
         data.feeSbiRef = feeSbiRef;
         data.feeBankRef = feeBankRef;
+        data.phone = phone;
         console.log(data);
 
         let subjects = [];
@@ -178,6 +180,10 @@ export const Arrears = ({ formStatus }) => {
                     <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
                         {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
                     </Form.Control>
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Phone No.</Form.Label>
+                    <Form.Control type="number" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)}  />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Batch</Form.Label>
