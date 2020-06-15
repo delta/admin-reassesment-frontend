@@ -42,6 +42,12 @@ export const Arrears = ({ formStatus }) => {
     let { url } = useRouteMatch();
     let formType = url.split('/').slice(-1)[0];
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startDate = new Date(2020, 5, 15);
+    const endDate = new Date(2020, 5, 22);
+
+    if (formType != 'redo') startDate.setDate(startDate.getDate() + 2);
     const addRedoForm = async (redoFormData) => {
         const config = {
             headers: {
@@ -153,7 +159,7 @@ export const Arrears = ({ formStatus }) => {
     return (
         <>
             {
-                formStatus[formType] ? <Redirect to='/forms' /> : ''
+                formStatus[formType] && (startDate > today || today > endDate) ? <Redirect to='/forms' /> : ''
             }
             {
                 errors.length ?
