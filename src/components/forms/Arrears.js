@@ -13,7 +13,7 @@ export const Arrears = ({ formStatus }) => {
     const departmentList = ['CSE', 'ECE', 'ICE', 'Mech', 'Meta'];
     const statusList = ['Regular', 'Passed Out']
     const startBatch = 2012;
-    const endBatch = 2019;
+    const endBatch = 2018;
 
     let batchOptions = [];
     for (let i = startBatch; i <= endBatch; ++i) batchOptions.push(i);
@@ -141,7 +141,10 @@ export const Arrears = ({ formStatus }) => {
         }
     }
 
-    let regulations = 'https://google.com';
+    const getRegLink = (formType) => {
+        if(formType === 'redo') 
+        return 'https://delta.nitt.edu/~nimish/Summer-Term-Redo-2020.docx';
+    }
 
     if (loading) return LoadingComponent;
 
@@ -204,9 +207,7 @@ export const Arrears = ({ formStatus }) => {
                 </Form.Group>
                 <h3>Regulations</h3>
                 <p>
-                    <li>Reg 1</li>
-                    <li>Reg 2</li>
-                    <a href={regulations}>Click here...</a></p>
+                    <a href={getRegLink(formType)}>Click here...</a></p>
                 <hr />
                 <h4>Payment Details</h4>
                 <h5>Fee Paid Details of {formType} 2020</h5>
