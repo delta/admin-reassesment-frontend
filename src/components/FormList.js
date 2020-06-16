@@ -4,7 +4,7 @@ import './css/formList.css';
 import { Link } from 'react-router-dom';
 
 export const FormList = ({formStatus}) => {
-    let formTypes = ['reassesment', 'redo', 'formative-assesment'];
+    let formTypes = [ 'redo'];
     return (
         <div className="formListContainer">
             <h2>FORMS</h2>

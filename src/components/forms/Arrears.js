@@ -10,10 +10,10 @@ import { getUserRoll } from '../../utils/authUtils'
 
 export const Arrears = ({ formStatus }) => {
 
-    const departmentList = ['CSE', 'ECE', 'ICE', 'Mech', 'Meta'];
-    const statusList = ['Regular', 'Passed Out']
-    const startBatch = 2012;
-    const endBatch = 2018;
+    const departmentList = ['Architecture', 'Chemical Engineering', 'Civil Engineering', 'Computer Science and Engineering', 'Electrical and Electronics Engineering', 'Electronics and Communication Engineering', 'Instrumentation and Control Engineering', 'Mechanical Engineering', 'Metallurgical and Materials Engineering', 'Production Engineering'];
+    const statusList = ['Passing Out', 'Passed Out']
+    const startBatch = 2011;
+    const endBatch = 2016;
 
     let batchOptions = [];
     for (let i = startBatch; i <= endBatch; ++i) batchOptions.push(i);
@@ -145,7 +145,16 @@ export const Arrears = ({ formStatus }) => {
 
     const getRegLink = (formType) => {
         if (formType === 'redo')
-            return 'https://delta.nitt.edu/~nimish/Summer-Term-Redo-2020.docx';
+            return [
+                {
+                    link: "https://delta.nitt.edu/~nimish/redo-barch.pdf",
+                    name: "NIT-T/DA/B.Arch./Summer Term/2020"
+                },
+                {
+                    link: "https://delta.nitt.edu/~nimish/redo-btech.pdf",
+                    name: "NIT-T/DA/ B. Tech./Summer Term/2020"
+                }];
+        else return [];
     }
 
     if (loading) return LoadingComponent;
@@ -154,6 +163,9 @@ export const Arrears = ({ formStatus }) => {
         <>
             {
                 formStatus[formType] ? <Redirect to='/forms' /> : ''
+            }
+            {
+                formType !== 'redo' ? <Redirect to='/forms' /> : ''
             }
             {
                 errors.length ?
@@ -169,11 +181,11 @@ export const Arrears = ({ formStatus }) => {
                 <h1 className="header">{getFormName(formType)}</h1>
                 <Form.Group >
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Shivasis Padhi" value={name} onChange={(e) => setName(e.target.value)} />
+                    <Form.Control type="text" placeholder="Enter full name" value={name} onChange={(e) => setName(e.target.value)} />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Roll No.</Form.Label>
-                    <Form.Control type="number" placeholder="107116121" value={roll} onChange={(e) => setRoll(e.target.value)} disabled />
+                    <Form.Control type="number" placeholder="" value={roll} onChange={(e) => setRoll(e.target.value)} disabled />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Department</Form.Label>
@@ -183,7 +195,7 @@ export const Arrears = ({ formStatus }) => {
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Phone No.</Form.Label>
-                    <Form.Control type="number" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)}  />
+                    <Form.Control type="number" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)} />
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Batch</Form.Label>
@@ -211,9 +223,14 @@ export const Arrears = ({ formStatus }) => {
                     <Form.Label>Fee Details</Form.Label>
                     <Form.Control as="textarea" value={feeDetails} onChange={(e) => setFeeDetails(e.target.value)} />
                 </Form.Group>
-                <h3>Regulations</h3>
+                <h3>Notices</h3>
                 <p>
-                    <a href={getRegLink(formType)}>Click here...</a></p>
+                    {
+                        getRegLink(formType).map((linkObj, idx) => (
+                        <li><a href={linkObj.link}>{linkObj.name}</a></li>
+                        ))
+                    }
+                </p>
                 <hr />
                 <h4>Payment Details</h4>
                 <h5>Fee Paid Details of {formType} 2020</h5>
