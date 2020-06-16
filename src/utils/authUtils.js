@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const isLogin = () => {
-    return !localStorage.getItem('tokens')
+    return !!localStorage.getItem('tokens')
 }
 
 export const unsetToken = () => {
