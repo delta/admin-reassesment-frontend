@@ -9,7 +9,7 @@ import { unsetToken } from '../utils/authUtils'
 
 const loggedInUrls = [
     {
-        name: "Reassesment",
+        name: "Reassessment",
         url: "/forms/reassesment"
     },
     {
@@ -17,7 +17,7 @@ const loggedInUrls = [
         url: "/forms/redo"
     },
     {
-        name: "Formative Assesment",
+        name: "Formative Assessment",
         url: "/forms/formative-assesment"
     },
 ]
