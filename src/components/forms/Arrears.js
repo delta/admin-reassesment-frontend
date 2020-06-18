@@ -7,20 +7,12 @@ import { SubjectList } from './SubjectList';
 import { useRouteMatch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { getUserRoll } from '../../utils/authUtils'
+import {
+    departmentList, statusList, degreeList, masterSemesterOptions, batchOptions, semesterOptions, 
+    specialisations
+} from './constants'
 
 export const Arrears = ({ formStatus }) => {
-
-    const departmentList = ['Architecture', 'Chemical Engineering', 'Civil Engineering', 'Computer Science and Engineering', 'Electrical and Electronics Engineering', 'Electronics and Communication Engineering', 'Instrumentation and Control Engineering', 'Mechanical Engineering', 'Metallurgical and Materials Engineering', 'Production Engineering'];
-    const statusList = ['Passing Out', 'Passed Out']
-    const startBatch = 2011;
-    const endBatch = 2016;
-
-    let batchOptions = [];
-    for (let i = startBatch; i <= endBatch; ++i) batchOptions.push(i);
-
-    let semesterOptions = [];
-    for (let i = 1; i <= 10; ++i) semesterOptions.push(i);
-
 
     const [name, setName] = useState('');
     const [roll, setRoll] = useState(getUserRoll());
@@ -38,6 +30,10 @@ export const Arrears = ({ formStatus }) => {
 
     const { loading, toggleLoading } = useContext(GlobalContext);
     const { subjectById, subjectAllId } = useContext(SubjectListContext);
+
+    /* for masters course */
+    const [degree, setDegree] = useState(degreeList[0]);
+    const [specialisation, setSpecialisation] = useState(null);
 
     let { url } = useRouteMatch();
     let formType = url.split('/').slice(-1)[0];
@@ -73,7 +69,7 @@ export const Arrears = ({ formStatus }) => {
         if (!data.feeTotal) err.push('Please fill fee total');
         if (!data.feeSbiRef) err.push('Please fill fee SBI ref');
         if (!data.feeBankRef) err.push('Please fill fee bank ref');
-        if (!data.subject.length) err.push('Please fill atleast 1 subject')
+        if (!data.subject.length) err.push('Please fill atleast 1 subject');
         data.subject.forEach((sub, idx) => {
             Object.keys(sub).forEach(key => {
                 if (!sub[key]) err.push(`${key.toUpperCase()} not filled for subject ${idx + 1}`);
@@ -104,6 +100,10 @@ export const Arrears = ({ formStatus }) => {
         data.feeBankRef = feeBankRef;
         data.phone = phone;
         console.log(data);
+        if (String(roll)[0] === '2') {
+            data.degree = degree;
+            if (specialisation !== null) data.specialisation = specialisation;
+        }
 
         let subjects = [];
         subjectAllId.forEach(sub => subjects.push(subjectById[sub]));
@@ -113,6 +113,10 @@ export const Arrears = ({ formStatus }) => {
             addRedoForm(data);
         else window.scrollTo(0, 0);
     }
+    useEffect(() => {
+        if ((degree === "MCA" || degree === 'MBA') && specialisation === null) setSpecialisation(null);
+        else setSpecialisation(specialisations[degree][0]);
+    }, [degree])
 
     const LoadingComponent =
         <Button variant="primary" disabled style={{
@@ -158,7 +162,6 @@ export const Arrears = ({ formStatus }) => {
     }
 
     if (loading) return LoadingComponent;
-
     return (
         <>
             {
@@ -187,12 +190,39 @@ export const Arrears = ({ formStatus }) => {
                     <Form.Label>Roll No.</Form.Label>
                     <Form.Control type="number" placeholder="" value={roll} onChange={(e) => setRoll(e.target.value)} disabled />
                 </Form.Group>
-                <Form.Group >
-                    <Form.Label>Department</Form.Label>
-                    <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
-                        {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
-                    </Form.Control>
-                </Form.Group>
+                {
+                    String(roll)[0] === '2' ? (
+                        <>
+                        <Form.Group >
+                            <Form.Label>Degree</Form.Label>
+                            <Form.Control as="select" value={degree} onChange={(e) => setDegree(e.target.value)}>
+                                {degreeList.map((dept, idx) => <option key={idx}>{dept}</option>)}
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group >
+                            <Form.Label>Semester</Form.Label>
+                            <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
+                                {Array(masterSemesterOptions[degree]).fill().map((_, idx) => <option key={idx}>{idx + 1}</option>)}
+                            </Form.Control>
+                        </Form.Group>
+                        {specialisations[degree].length > 0 && (
+                            <Form.Group>
+                                <Form.Label>Specialisation</Form.Label>
+                                <Form.Control as="select" value={specialisation} onChange={(e) => setSpecialisation(e.target.value)}>
+                                    {specialisations[degree].map((sp, idx) => <option key={idx}>{sp}</option>)}
+                                </Form.Control>
+                            </Form.Group>
+                        )}
+                        </>
+                    ) : (
+                        <Form.Group >
+                            <Form.Label>Department</Form.Label>
+                            <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
+                                {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
+                            </Form.Control>
+                        </Form.Group>
+                    )
+                }
                 <Form.Group >
                     <Form.Label>Phone No.</Form.Label>
                     <Form.Control type="number" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)} />
@@ -216,7 +246,7 @@ export const Arrears = ({ formStatus }) => {
                             <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
                                 {semesterOptions.map((status, idx) => <option key={idx}>{status}</option>)}
                             </Form.Control>
-                        </Form.Group>) : ''
+                        </Form.Group>) : null
                 }
                 <SubjectList />
                 <Form.Group >
