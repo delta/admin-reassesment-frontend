@@ -11,8 +11,10 @@ export const masterSemesterOptions = {
 const startBatch = 2011;
 const endBatch = 2016;
 
-export let batchOptions = [];
-for (let i = startBatch; i <= endBatch; ++i) batchOptions.push(i);
+export let ugBatchOptions = [];
+for (let i = startBatch; i <= endBatch; ++i) ugBatchOptions.push(i);
+
+export const masterBatchOptions = ["Admitted in 2015 - 2016", "2017 and after"]
 
 export let semesterOptions = [];
 for (let i = 1; i <= 10; ++i) semesterOptions.push(i);

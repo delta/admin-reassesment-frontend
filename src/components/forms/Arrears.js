@@ -8,11 +8,14 @@ import { useRouteMatch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { getUserRoll } from '../../utils/authUtils'
 import {
-    departmentList, statusList, degreeList, masterSemesterOptions, batchOptions, semesterOptions, 
-    specialisations
+    departmentList, statusList, degreeList, masterSemesterOptions, ugBatchOptions, semesterOptions, 
+    specialisations, masterBatchOptions
 } from './constants'
 
 export const Arrears = ({ formStatus }) => {
+
+    const isPg = String(getUserRoll())[0] === '2';
+    let batchOptions = isPg ? masterBatchOptions : ugBatchOptions;
 
     const [name, setName] = useState('');
     const [roll, setRoll] = useState(getUserRoll());
@@ -60,7 +63,6 @@ export const Arrears = ({ formStatus }) => {
         let err = [];
         if (!data.name) err.push('Please fill Name');
         if (!data.roll) err.push('Please fill Roll No');
-        if (!data.department) err.push('Please fill department');
         if (!data.batch) err.push('Please fill batch');
         if (!data.status) err.push('Please fill status');
         if (!data.examType) err.push('Please fill exam type');
@@ -102,6 +104,8 @@ export const Arrears = ({ formStatus }) => {
         console.log(data);
         if (String(roll)[0] === '2') {
             data.degree = degree;
+            data.course = "PG";
+            data.department = "";
             if (specialisation !== null) data.specialisation = specialisation;
         }
 
@@ -149,6 +153,8 @@ export const Arrears = ({ formStatus }) => {
 
     const getRegLink = (formType) => {
         if (formType === 'redo')
+        {
+            if(String(roll)[0] !== '2')
             return [
                 {
                     link: "https://delta.nitt.edu/~nimish/redo-barch.pdf",
@@ -158,8 +164,12 @@ export const Arrears = ({ formStatus }) => {
                     link: "https://delta.nitt.edu/~nimish/redo-btech.pdf",
                     name: "NIT-T/DA/ B. Tech./Summer Term/2020"
                 }];
+            else return [{link:"https://delta.nitt.edu/~nimish/redo_mtech.pdf", name:"NITT/AO/PG-Summer Term/ 2020/91 "}]
+        }
         else return [];
     }
+
+    
 
     if (loading) return LoadingComponent;
     return (
