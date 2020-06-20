@@ -8,7 +8,7 @@ import { useRouteMatch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { getUserRoll } from '../../utils/authUtils'
 import {
-    departmentList, statusList, degreeList, masterSemesterOptions, ugBatchOptions, semesterOptions, 
+    departmentList, statusList, degreeList, masterSemesterOptions, ugBatchOptions, semesterOptions,
     specialisations, masterBatchOptions
 } from './constants'
 
@@ -70,7 +70,6 @@ export const Arrears = ({ formStatus }) => {
         if (!data.feeSubjectNo) err.push('Please fill fee subject No');
         if (!data.feeTotal) err.push('Please fill fee total');
         if (!data.feeSbiRef) err.push('Please fill fee SBI ref');
-        if (!data.feeBankRef) err.push('Please fill fee bank ref');
         if (!data.subject.length) err.push('Please fill atleast 1 subject');
         data.subject.forEach((sub, idx) => {
             Object.keys(sub).forEach(key => {
@@ -152,24 +151,23 @@ export const Arrears = ({ formStatus }) => {
     }
 
     const getRegLink = (formType) => {
-        if (formType === 'redo')
-        {
-            if(String(roll)[0] !== '2')
-            return [
-                {
-                    link: "https://delta.nitt.edu/~nimish/redo-barch.pdf",
-                    name: "NIT-T/DA/B.Arch./Summer Term/2020"
-                },
-                {
-                    link: "https://delta.nitt.edu/~nimish/redo-btech.pdf",
-                    name: "NIT-T/DA/ B. Tech./Summer Term/2020"
-                }];
-            else return [{link:"https://delta.nitt.edu/~nimish/redo_mtech.pdf", name:"NITT/AO/PG-Summer Term/ 2020/91 "}]
+        if (formType === 'redo') {
+            if (String(roll)[0] !== '2')
+                return [
+                    {
+                        link: "https://delta.nitt.edu/~nimish/redo-barch.pdf",
+                        name: "NIT-T/DA/B.Arch./Summer Term/2020"
+                    },
+                    {
+                        link: "https://delta.nitt.edu/~nimish/redo-btech.pdf",
+                        name: "NIT-T/DA/ B. Tech./Summer Term/2020"
+                    }];
+            else return [{ link: "https://delta.nitt.edu/~nimish/redo_mtech.pdf", name: "NITT/AO/PG-Summer Term/ 2020/91 " }]
         }
         else return [];
     }
 
-    
+
 
     if (loading) return LoadingComponent;
     return (
@@ -203,35 +201,35 @@ export const Arrears = ({ formStatus }) => {
                 {
                     String(roll)[0] === '2' ? (
                         <>
-                        <Form.Group >
-                            <Form.Label>Degree</Form.Label>
-                            <Form.Control as="select" value={degree} onChange={(e) => setDegree(e.target.value)}>
-                                {degreeList.map((dept, idx) => <option key={idx}>{dept}</option>)}
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group >
-                            <Form.Label>Semester</Form.Label>
-                            <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
-                                {Array(masterSemesterOptions[degree]).fill().map((_, idx) => <option key={idx}>{idx + 1}</option>)}
-                            </Form.Control>
-                        </Form.Group>
-                        {specialisations[degree].length > 0 && (
-                            <Form.Group>
-                                <Form.Label>Specialisation</Form.Label>
-                                <Form.Control as="select" value={specialisation} onChange={(e) => setSpecialisation(e.target.value)}>
-                                    {specialisations[degree].map((sp, idx) => <option key={idx}>{sp}</option>)}
+                            <Form.Group >
+                                <Form.Label>Degree</Form.Label>
+                                <Form.Control as="select" value={degree} onChange={(e) => setDegree(e.target.value)}>
+                                    {degreeList.map((dept, idx) => <option key={idx}>{dept}</option>)}
                                 </Form.Control>
                             </Form.Group>
-                        )}
+                            <Form.Group >
+                                <Form.Label>Semester</Form.Label>
+                                <Form.Control as="select" value={semester} onChange={(e) => setSemester(e.target.value)}>
+                                    {Array(masterSemesterOptions[degree]).fill().map((_, idx) => <option key={idx}>{idx + 1}</option>)}
+                                </Form.Control>
+                            </Form.Group>
+                            {specialisations[degree].length > 0 && (
+                                <Form.Group>
+                                    <Form.Label>Specialisation</Form.Label>
+                                    <Form.Control as="select" value={specialisation} onChange={(e) => setSpecialisation(e.target.value)}>
+                                        {specialisations[degree].map((sp, idx) => <option key={idx}>{sp}</option>)}
+                                    </Form.Control>
+                                </Form.Group>
+                            )}
                         </>
                     ) : (
-                        <Form.Group >
-                            <Form.Label>Department</Form.Label>
-                            <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
-                                {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
-                            </Form.Control>
-                        </Form.Group>
-                    )
+                            <Form.Group >
+                                <Form.Label>Department</Form.Label>
+                                <Form.Control as="select" value={department} onChange={(e) => setDepartment(e.target.value)}>
+                                    {departmentList.map((dept, idx) => <option key={idx}>{dept}</option>)}
+                                </Form.Control>
+                            </Form.Group>
+                        )
                 }
                 <Form.Group >
                     <Form.Label>Phone No.</Form.Label>
@@ -267,7 +265,7 @@ export const Arrears = ({ formStatus }) => {
                 <p>
                     {
                         getRegLink(formType).map((linkObj, idx) => (
-                        <li><a href={linkObj.link}>{linkObj.name}</a></li>
+                            <li><a href={linkObj.link}>{linkObj.name}</a></li>
                         ))
                     }
                 </p>
@@ -293,10 +291,13 @@ export const Arrears = ({ formStatus }) => {
                     <Form.Label>SBI Collect Reference Number</Form.Label>
                     <Form.Control type="text" placeholder="" value={feeSbiRef} onChange={(e) => setFeeSbiRef(e.target.value)} />
                 </Form.Group>
-                <Form.Group >
-                    <Form.Label>Bank Reference Number</Form.Label>
-                    <Form.Control type="text" placeholder="" value={feeBankRef} onChange={(e) => setFeeBankRef(e.target.value)} />
-                </Form.Group>
+                {
+                    formType !== 'redo' ?
+                        <Form.Group >
+                            <Form.Label>Bank Reference Number</Form.Label>
+                            <Form.Control type="text" placeholder="" value={feeBankRef} onChange={(e) => setFeeBankRef(e.target.value)} />
+                        </Form.Group>:''
+                }
                 <Button variant="primary" type="submit" onClick={(e) => handleSubmit(e)}>
                     SUBMIT
         </Button>
