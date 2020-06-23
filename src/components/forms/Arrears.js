@@ -265,7 +265,7 @@ export const Arrears = ({ formStatus }) => {
                 <p>
                     {
                         getRegLink(formType).map((linkObj, idx) => (
-                            <li><a href={linkObj.link}>{linkObj.name}</a></li>
+                            <li key={idx}><a href={linkObj.link}>{linkObj.name}</a></li>
                         ))
                     }
                 </p>
